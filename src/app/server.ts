@@ -1,9 +1,15 @@
-import express from 'express';
-const app = express()
+import { Server } from "http";
+import app from "./app";
 
 
-app.get('/', (req, res) => {
-    res.send('Hello Dev!')
-})
+let server: Server;
 
-export default app;
+const PORT = 3000;
+
+async function bootstrap() {
+    server = app.listen(PORT, () => {
+        console.log(`App listening on port ${PORT}`)
+    })
+}
+
+bootstrap();
