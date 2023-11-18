@@ -24,9 +24,35 @@ useRouter.get('/user', (req: Request, res: Response) => {
     })
 })
 
-app.get('/', logger, (req: Request, res: Response) => {
+app.get('/', logger, (req: Request, res: Response, next: NextFunction) => {
+    try {
+        res.send(something)
+    } catch (err) {
+        next(err);
+    }
 
-    res.send('Hello Developers!')
 })
+
+app.all('*', (req: Request, res: Response) => {
+    res.status(400).json({
+        success: false,
+        message: "Not Found"
+    });
+});
+
+// global error handler
+app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+    if (error) {
+        res.status(400).json(
+            {
+                success: false,
+                message: 'Something went wrong'
+            }
+        )
+    }
+})
+
+
+
 
 export default app;

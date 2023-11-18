@@ -21,7 +21,27 @@ useRouter.get('/user', (req, res) => {
         data: user
     });
 });
-app.get('/', logger, (req, res) => {
-    res.send('Hello Developers!');
+app.get('/', logger, (req, res, next) => {
+    try {
+        res.send(something);
+    }
+    catch (err) {
+        next(err);
+    }
+});
+app.all('*', (req, res) => {
+    res.status(400).json({
+        success: false,
+        message: "Not Found"
+    });
+});
+// global error handler
+app.use((error, req, res, next) => {
+    if (error) {
+        res.status(400).json({
+            success: false,
+            message: 'Something went wrong'
+        });
+    }
 });
 exports.default = app;
